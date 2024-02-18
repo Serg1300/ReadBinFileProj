@@ -8,9 +8,9 @@
             string path = Console.ReadLine();
             path = path + "\\Students";
             var di = new DirectoryInfo(path);
-            if (!di.Exists )
+            if (!di.Exists)
             {
-                di.Create();                
+                di.Create();
             }
             else
             {
@@ -38,49 +38,50 @@
                     }
                     Console.WriteLine("Файл считан");
                 }
-            }
-            // Создание списка групп
-            var groups = new List<string>();
-            foreach (var st in students)
-            {
-                if (!groups.Contains(st.Group))
+                // Создание списка групп
+                var groups = new List<string>();
+                foreach (var st in students)
                 {
-                    groups.Add(st.Group);
-                }
-            }
-            // Запись студентов в текстовый файл
-            foreach (var group in groups)
-            {
-                string pathFileText = path + "\\" + group + ".txt";
-                FileInfo fileInfo = new FileInfo(pathFileText);
-                var studentByGroup = students.Where(s => s.Group == group);
-                
-                if (!fileInfo.Exists)
-                {
-                    using (StreamWriter sw = fileInfo.CreateText())
+                    if (!groups.Contains(st.Group))
                     {
-                        sw.WriteLine("Имя        Дата Рождения        Средний балл");
-                        foreach (var student in studentByGroup)
-                        {
-                            sw.WriteLine($"{student.Name}       {student.DateOfBirth.ToLongDateString()}       {student.AverageScore}");
-                        }
+                        groups.Add(st.Group);
                     }
-                    Console.WriteLine($"В папку Students добавлен новый файл {group}.txt");
                 }
-                else
+                // Запись студентов в текстовый файл
+                foreach (var group in groups)
                 {
-                    using (StreamWriter sw = fileInfo.AppendText())
-                    {
-                        foreach (var student in studentByGroup)
-                        {
-                            sw.WriteLine($"{student.Name}       {student.DateOfBirth.ToLongDateString()}       {student.AverageScore}");
-                        }
-                    }
-                    Console.WriteLine($"В файл {group}.txt добавлена новая запись");
-                }
-                
+                    string pathFileText = path + "\\" + group + ".txt";
+                    FileInfo fileInfo = new FileInfo(pathFileText);
+                    var studentByGroup = students.Where(s => s.Group == group);
 
+                    if (!fileInfo.Exists)
+                    {
+                        using (StreamWriter sw = fileInfo.CreateText())
+                        {
+                            sw.WriteLine("Имя        Дата Рождения        Средний балл");
+                            foreach (var student in studentByGroup)
+                            {
+                                sw.WriteLine($"{student.Name}       {student.DateOfBirth.ToLongDateString()}       {student.AverageScore}");
+                            }
+                        }
+                        Console.WriteLine($"В папку Students добавлен новый файл {group}.txt");
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = fileInfo.AppendText())
+                        {
+                            foreach (var student in studentByGroup)
+                            {
+                                sw.WriteLine($"{student.Name}       {student.DateOfBirth.ToLongDateString()}       {student.AverageScore}");
+                            }
+                        }
+                        Console.WriteLine($"В файл {group}.txt добавлена новая запись");
+                    }
+
+
+                }
             }
+            else { Console.WriteLine("Файла students.dat не найден"); }
 
         }
     }
